@@ -1,2 +1,2 @@
 # DORN_DepthEstimation
-Implementation of  "Deep Ordinal Regression Network for Monocular Depth Estimation" paper 
+Implementation of  "Monocular Depth Estimation Using Neural Regression Forest" paper 
