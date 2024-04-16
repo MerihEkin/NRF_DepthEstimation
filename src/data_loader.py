@@ -37,7 +37,7 @@ class NYUV2Dataset:
 
     def __getitem__(self, idx):
         image_index = idx // self.xs.size
-        pixel_index = idx % (len(self.X_train) - 1)
+        pixel_index = idx % self.xs.size
 
         img = self.X_train[image_index]
         i, j = self.xs[pixel_index], self.ys[pixel_index]
@@ -63,8 +63,10 @@ class NYUV2Dataset:
         depths = []
 
         for i in range(num_image):
-            images.append(data['images'][i]) # add maybe .T
-            depths.append(data['depths'][i]) # add maybe .T
+            image = data['images'][i].astype(np.float32) / 255.0
+            depth = data['depths'][i].astype(np.float32)
+            images.append(image) # add maybe .T
+            depths.append(depth) # add maybe .T
 
             # image_PIL = Image.fromarray(X_train[i].T)
             # depth_PIL = Image.fromarray(np.uint8(y_train[i].T/np.max(y_train[i]) * 255), 'L')
@@ -80,5 +82,5 @@ if __name__ == '__main__':
     
     dataset = NYUV2Dataset('data/nyu_depth_v2_labeled.mat')
     # Create DataLoader
-    train_dataloader = DataLoader(dataset, batch_size=64, shuffle=True)
+    train_dataloader = DataLoader(dataset, batch_size=64, shuffle=False)
     train_features, train_labels = next(iter(train_dataloader))
