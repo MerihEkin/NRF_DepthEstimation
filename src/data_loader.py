@@ -30,10 +30,8 @@ class NYUV2Dataset:
 
         self.transforms = transforms
 
-
     def __len__(self):
         return self.xs.size * (len(self.X_train) - 1)
-
 
     def __getitem__(self, idx):
         image_index = idx // self.xs.size
@@ -48,7 +46,6 @@ class NYUV2Dataset:
             current_window = self.transforms(current_window)
 
         return current_window, self.y_train[image_index][j, i]
-
 
     def load_data_to_arrays(self):
         data = h5py.File(self.data_file, 'r')
@@ -82,5 +79,9 @@ if __name__ == '__main__':
     
     dataset = NYUV2Dataset('data/nyu_depth_v2_labeled.mat')
     # Create DataLoader
-    train_dataloader = DataLoader(dataset, batch_size=64, shuffle=False)
+    """
+    TODO: shuffling raises error probably due to the size of the dataset 
+    this might need be fixed or the shuffling in images might also be sufficient
+    """
+    train_dataloader = DataLoader(dataset, batch_size=64, shuffle=False) 
     train_features, train_labels = next(iter(train_dataloader))

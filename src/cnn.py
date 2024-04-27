@@ -2,7 +2,18 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+"TODO : there should be a better way of coding CNNs with 3 different architectures"
+
+"The conv nets in the current scipt tested for NYUV2 data ++"
+
 class ConvNet_TopOneThird(nn.Module):
+    """
+    The first one third of the regression tree is composed of
+    2 convolutional + pooling layers
+    followed by 2 fully connected layers
+    and a Sigmoid function to determine the probability of 
+    going to the rigth node.
+    """
     def __init__(self, window_size=150):
         super(ConvNet_TopOneThird, self).__init__()
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
@@ -25,6 +36,13 @@ class ConvNet_TopOneThird(nn.Module):
 
 
 class ConvNet_LowerOneThird(nn.Module):
+    """
+    The lower one third of the regression tree is composed of
+    2 convolutional + pooling layers
+    followed by 1 fully connected layer
+    and a Sigmoid function to determine the probability of 
+    going to the rigth node.
+    """
     def __init__(self, window_size=150):
         super(ConvNet_LowerOneThird, self).__init__()
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
@@ -46,6 +64,13 @@ class ConvNet_LowerOneThird(nn.Module):
     
 
 class ConvNet_BottomOneThird(nn.Module):
+    """
+    The bottom one third of the regression tree is composed of
+    1 convolutional + pooling layer
+    followed by 1 fully connected layer
+    and a Sigmoid function to determine the probability of 
+    going to the rigth node.
+    """
     def __init__(self, window_size=150):
         super(ConvNet_BottomOneThird, self).__init__()
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
